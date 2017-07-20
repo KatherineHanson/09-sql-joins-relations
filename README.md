@@ -56,7 +56,7 @@ You're ready to go!
 
 ## Feature Tasks
 
-***Don't forget to set your conString!*** 
+***Don't forget to set your conString!***
 
 #### User Stories: MVP
  - As a developer, I want article data to persist with SQL, so that I can store more, faster and have more query flexibility.
