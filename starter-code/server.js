@@ -6,7 +6,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3000;
 const app = express();
-const conString = '';// TODO: Don't forget to set your own conString
+const conString = 'postgres://localhost:/kilovolt';// DONE: Don't forget to set your own conString
 const client = new pg.Client(conString);
 client.connect();
 client.on('error', function(error) {
@@ -24,7 +24,24 @@ app.get('/new', function(request, response) {
 app.get('/articles', function(request, response) {
   // REVIEW: This query will join the data together from our tables and send it back to the client.
   // TODO: Write a SQL query which joins all data from articles and authors tables on the author_id value of each
-  client.query(``)
+  client.query(
+    `
+    CREATE TABLE IF NOT EXISTS authors(
+      author_id SERIAL PRIMARY KEY,
+      author VARCHAR(255) NOT NULL,
+      "authorUrl" VARCHAR (255)
+    );
+
+    CREATE TABLE IF NOT EXISTS articles(
+      article_id SERIAL PRIMARY KEY,
+      author_id INTEGER REFERENCES authors(author_id);
+      title VARCHAR(255) NOT NULL,
+      category VARCHAR(20),
+      "publishedOn" DATE,
+      body TEXT NOT NULL
+    );
+    `
+  )
   .then(function(result) {
     response.send(result.rows);
   })
